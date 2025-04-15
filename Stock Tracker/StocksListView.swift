@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  StocksListView.swift
 //  Stock Tracker
 //
 //  Created by Sylvan  on 15/04/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct StocksListView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +20,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    StocksListView()
 }
