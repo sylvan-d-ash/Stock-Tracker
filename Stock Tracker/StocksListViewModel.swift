@@ -8,57 +8,43 @@
 import Foundation
 import Combine
 
+@MainActor
 class StocksListViewModel: ObservableObject {
-    @Published var isLoading = false
     @Published var markets: [MarketItem] = []
+    @Published var isLoading = false
+    @Published var errorMessage: String?
 
-//    private let baseURL = URL(string: "https://api.iextrading.com/1.0/stock/market/updates")!
-    private let urlString = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-summary?region=US"
+    private let service: MarketItemsService
     private var useMockData = true
 
-    func fetchMarketData() {
+    init(service: MarketItemsService = DefaultMarketItemsService()) {
+        self.service = service
+    }
+
+    func fetchMarketData() async {
         if useMockData {
             self.markets = MarketItem.mockData
             return
         }
 
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL")
-            return
+        guard !isLoading else { return }
+        isLoading = true
+        errorMessage = nil
+
+        let result = await service.getMarketItems()
+        switch result {
+        case .success(let response):
+            if let error = response.marketSummaryAndSparkResponse.error {
+                errorMessage = error
+                return
+            }
+
+            markets = response.marketSummaryAndSparkResponse.result
+        case .failure(let error):
+            errorMessage = error.localizedDescription
         }
 
-        isLoading = true
-
-        let headers = [
-            "x-rapidapi-key": "API-KEY-HERE", // TODO: load from secrets config file
-            "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
-        ]
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
-                self.isLoading = false
-
-                if let error = error {
-                    print("Error: \(error.localizedDescription)")
-                    return
-                }
-
-                guard let data = data else { return }
-
-                do {
-                    let response = try JSONDecoder().decode(MarketSummaryResponse.self, from: data)
-                    self.markets = response.marketSummaryAndSparkResponse.result
-                } catch {
-                    print("Decoding error: \(error.localizedDescription)")
-                }
-            }
-        }.resume()
+        isLoading = false
     }
 }
 

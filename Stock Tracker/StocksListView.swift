@@ -41,8 +41,8 @@ struct StocksListView: View {
                 .padding(.vertical, 6)
             }
             .navigationTitle("Market Summary")
-            .onAppear {
-                viewModel.fetchMarketData()
+            .task {
+                await viewModel.fetchMarketData()
             }
         }
     }
