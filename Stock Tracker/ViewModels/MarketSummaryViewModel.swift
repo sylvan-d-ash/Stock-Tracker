@@ -1,5 +1,5 @@
 //
-//  StocksListViewModel.swift
+//  MarketSummaryViewModel.swift
 //  Stock Tracker
 //
 //  Created by Sylvan  on 16/04/2025.
@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 @MainActor
-class StocksListViewModel: ObservableObject {
+class MarketSummaryViewModel: ObservableObject {
     @Published var markets: [MarketItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
