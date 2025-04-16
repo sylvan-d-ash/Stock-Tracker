@@ -26,11 +26,7 @@ struct MarketItemRow: View {
 
             Spacer()
 
-            Text(item.quoteType)
-                .font(.caption)
-                .frame(width: 75, alignment: .leading)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
+            SparklineView(close: item.spark.close)
 
             Text("$\(item.regularMarketPrice?.fmt ?? "--")")
                 .font(.caption)

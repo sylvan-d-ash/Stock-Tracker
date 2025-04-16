@@ -17,7 +17,6 @@ struct MarketSummaryView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
 
-                
                 if viewModel.isLoading {
                     ProgressView()
                         .listRowBackground(Color.clear)
@@ -25,7 +24,7 @@ struct MarketSummaryView: View {
                     ForEach(viewModel.markets, id: \.symbol) { item in
                         MarketItemRow(item: item)
                             .listRowBackground(Color.clear)
-                            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+                            .listRowInsets(EdgeInsets(top: 2, leading: 0, bottom: 2, trailing: 0))
                     }
                 }
             }

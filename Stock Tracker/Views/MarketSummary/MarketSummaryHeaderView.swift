@@ -14,9 +14,6 @@ struct MarketSummaryHeaderView: View {
 
             Spacer()
 
-            Text("Type")
-                .frame(width: 75, alignment: .leading)
-
             Text("Price")
                 .frame(width: 75, alignment: .trailing)
 

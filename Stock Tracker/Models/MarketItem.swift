@@ -21,13 +21,18 @@ struct MarketItem: Codable {
         let raw: Double
         let fmt: String
     }
-    
+
+    struct Sparkline: Codable {
+        let close: [Double]
+    }
+
     let symbol: String
     let shortName: String
     let marketState: String
     let regularMarketPrice: PriceInfo?
     let regularMarketPreviousClose: PriceInfo?
     let quoteType: String
+    let spark: Sparkline
 
     var change: Double {
         guard let price = regularMarketPrice?.raw, let previousClose = regularMarketPreviousClose?.raw else {
@@ -47,7 +52,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 4200.00, fmt: "4,200.00"),
             regularMarketPreviousClose: .init(raw: 4180.00, fmt: "4,180.00"),
-            quoteType: "FUTURE"
+            quoteType: "FUTURE",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "^DJI",
@@ -55,7 +63,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 35000.00, fmt: "35,000.00"),
             regularMarketPreviousClose: .init(raw: 35100.00, fmt: "35,100.00"),
-            quoteType: "INDEX"
+            quoteType: "INDEX",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "^IXIC",
@@ -63,7 +74,10 @@ extension MarketItem {
             marketState: "CLOSED",
             regularMarketPrice: .init(raw: 14500.00, fmt: "14,500.00"),
             regularMarketPreviousClose: .init(raw: 14400.00, fmt: "14,400.00"),
-            quoteType: "INDEX"
+            quoteType: "INDEX",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "AAPL",
@@ -71,7 +85,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 175.00, fmt: "175.00"),
             regularMarketPreviousClose: .init(raw: 172.00, fmt: "172.00"),
-            quoteType: "EQUITY"
+            quoteType: "EQUITY",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "TSLA",
@@ -79,7 +96,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 700.00, fmt: "700.00"),
             regularMarketPreviousClose: .init(raw: 710.00, fmt: "710.00"),
-            quoteType: "EQUITY"
+            quoteType: "EQUITY",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "MSFT",
@@ -87,7 +107,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 330.00, fmt: "330.00"),
             regularMarketPreviousClose: .init(raw: 325.00, fmt: "325.00"),
-            quoteType: "CRYPTOCURRENCY"
+            quoteType: "CRYPTOCURRENCY",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "^RUT",
@@ -95,7 +118,10 @@ extension MarketItem {
             marketState: "PRE",
             regularMarketPrice: .init(raw: 1900.00, fmt: "1,900.00"),
             regularMarketPreviousClose: .init(raw: 1895.00, fmt: "1,895.00"),
-            quoteType: "INDEX"
+            quoteType: "INDEX",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "GOOG",
@@ -103,7 +129,10 @@ extension MarketItem {
             marketState: "CLOSED",
             regularMarketPrice: .init(raw: 2800.00, fmt: "2,800.00"),
             regularMarketPreviousClose: .init(raw: 2810.00, fmt: "2,810.00"),
-            quoteType: "CURRENCY"
+            quoteType: "CURRENCY",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "AMZN",
@@ -111,7 +140,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 120.00, fmt: "120.00"),
             regularMarketPreviousClose: .init(raw: 118.50, fmt: "118.50"),
-            quoteType: "MUTUALFUND"
+            quoteType: "MUTUALFUND",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5374.75, 5376.25, 5370.0, 5367.5, 5368.0, 5388.0, 5386.75]
+            )
         ),
         MarketItem(
             symbol: "^VIX",
@@ -119,7 +151,10 @@ extension MarketItem {
             marketState: "REGULAR",
             regularMarketPrice: .init(raw: 19.25, fmt: "19.25"),
             regularMarketPreviousClose: .init(raw: 19.00, fmt: "19.00"),
-            quoteType: "INDEX"
+            quoteType: "INDEX",
+            spark: Sparkline(
+                close: [5378.25, 5378.25, 5378.0, 5378.75, 5379.0, 5380.0, 5379.5, 5380.0, 5377.5, 5274.75, 5276.25, 5270.0, 5267.5, 5268.0, 5288.0, 5286.75]
+            )
         )
     ]
 }
