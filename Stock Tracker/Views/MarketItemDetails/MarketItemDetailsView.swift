@@ -24,7 +24,8 @@ struct MarketItemDetailsView: View {
                 } else if let summary = viewModel.summary {
                     MarketItemDetailsHeaderView(summary: summary)
 
-                    Divider()
+                    MarketItemChartView(item: item)
+                        .frame(height: 210)
 
                     MarketItemDetailsStatsView(summary: summary)
                 }
