@@ -22,61 +22,6 @@ struct StatItem: View {
     }
 }
 
-extension Double {
-    func roundedToTwoDecimalString() -> String {
-        let value = ceil(self * 100) / 100
-        return String(format: "%.2f", value)
-    }
-
-    func asPercentageString() -> String {
-        return "\(self > 0 ? "+" : "")" + self.roundedToTwoDecimalString() + "%"
-    }
-}
-
-extension TimeInterval {
-    func asDateString(with offsetMilliseconds: Int) -> String {
-        let interval = self + TimeInterval(offsetMilliseconds / 1000)
-        let date = Date(timeIntervalSince1970: interval)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM d, yyyy"
-        return dateFormatter.string(from: date)
-    }
-
-    func asDateTimeString(with offsetMilliseconds: Int) -> String {
-        let interval = self + TimeInterval(offsetMilliseconds / 1000)
-        let date = Date(timeIntervalSince1970: interval)
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.dateFormat = "MMM d h:mm:ss a"
-        return dateFormatter.string(from: date)
-    }
-
-    func asTimeString(with offsetMilliseconds: Int) -> String {
-        let interval = self + TimeInterval(offsetMilliseconds / 1000)
-        let date = Date(timeIntervalSince1970: interval)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm:ss a"
-        return dateFormatter.string(from: date)
-    }
-}
-
-extension Int {
-    func formattedMarketCap() -> String {
-        let number = Double(self)
-
-        switch number {
-        case 1_000_000_000_000...:
-            return String(format: "%.2fT", number / 1_000_000_000_000)
-        case 1_000_000_000...:
-            return String(format: "%.2fB", number / 1_000_000_000)
-        case 1_000_000...:
-            return String(format: "%.2fM", number / 1_000_000)
-        default:
-            return String(format: "%.0f", number) // No suffix for numbers below 1M
-        }
-    }
-}
-
 struct MarketItemDetailsHeaderView: View {
     @State var summary: QuoteSummary
 
