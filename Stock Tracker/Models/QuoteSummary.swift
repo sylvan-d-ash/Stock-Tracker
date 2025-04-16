@@ -58,6 +58,9 @@ struct QuoteSummary: Decodable {
     let dividendYield: Double?
     let exDividendDate: TimeInterval
     let targetPriceMean: Double
+
+    var bidLot: Int { return bidSize * 100 }
+    var askLot: Int { return askSize * 100 }
 }
 
 extension QuoteSummary {

@@ -1,5 +1,5 @@
 //
-//  MarketSummaryViewModel.swift
+//  MarketItemDetailsViewModel.swift
 //  Stock Tracker
 //
 //  Created by Sylvan  on 16/04/2025.
@@ -9,21 +9,23 @@ import Foundation
 import Combine
 
 @MainActor
-final class MarketSummaryViewModel: ObservableObject {
-    @Published var markets: [MarketItem] = []
+final class MarketItemDetailsViewModel: ObservableObject {
+    @Published var summary: QuoteSummary?
     @Published var isLoading = false
     @Published var errorMessage: String?
 
+    private let item: MarketItem
     private let service: MarketItemsService
     private var useMockData = true
 
-    init(service: MarketItemsService = DefaultMarketItemsService()) {
+    init(item: MarketItem, service: MarketItemsService = DefaultMarketItemsService()) {
+        self.item = item
         self.service = service
     }
 
-    func fetchMarketData() async {
+    func fetchSummary() async {
         if useMockData {
-            self.markets = MarketItem.mockData
+            summary = QuoteSummary.mockData
             return
         }
 
@@ -31,20 +33,17 @@ final class MarketSummaryViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        let result = await service.fetchMarketItems()
+        let result = await service.fetchSummary(for: [item.symbol])
+
         switch result {
         case .success(let response):
-            if let error = response.marketSummaryAndSparkResponse.error {
+            if let error = response.error {
                 errorMessage = error
                 return
             }
-
-            markets = response.marketSummaryAndSparkResponse.result
+            summary = response.result.first
         case .failure(let error):
             errorMessage = error.localizedDescription
         }
-
-        isLoading = false
     }
 }
-
