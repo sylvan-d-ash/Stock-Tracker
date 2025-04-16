@@ -12,14 +12,21 @@ struct MarketSummaryView: View {
 
     var body: some View {
         NavigationView {
-            List(viewModel.markets, id: \.symbol) { item in
+            List {
+                MarketSummaryHeaderView()
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+
+                
                 if viewModel.isLoading {
                     ProgressView()
                         .listRowBackground(Color.clear)
                 } else {
-                    MarketItemRow(item: item)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+                    ForEach(viewModel.markets, id: \.symbol) { item in
+                        MarketItemRow(item: item)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
+                    }
                 }
             }
             .navigationTitle("Market Summary")
