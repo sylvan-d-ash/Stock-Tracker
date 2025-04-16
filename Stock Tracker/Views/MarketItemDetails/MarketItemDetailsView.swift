@@ -17,33 +17,31 @@ struct MarketItemDetailsView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    if viewModel.isLoading {
-                        ProgressView()
-                    } else if let summary = viewModel.summary {
-                        MarketItemDetailsHeaderView(summary: summary)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                if viewModel.isLoading {
+                    ProgressView()
+                } else if let summary = viewModel.summary {
+                    MarketItemDetailsHeaderView(summary: summary)
 
-                        Divider()
+                    Divider()
 
-                        MarketItemDetailsStatsView(summary: summary)
-                    }
+                    MarketItemDetailsStatsView(summary: summary)
                 }
-                .padding()
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("\(item.shortName) (\(item.symbol))")
-                            .font(.headline)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                    }
+            }
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("\(item.shortName) (\(item.symbol))")
+                        .font(.headline)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .frame(maxWidth: .infinity, alignment: .center)
                 }
-                .task {
-                    await viewModel.fetchSummary()
-                }
+            }
+            .task {
+                await viewModel.fetchSummary()
             }
         }
     }
@@ -51,5 +49,4 @@ struct MarketItemDetailsView: View {
 
 #Preview {
     MarketItemDetailsView(item: MarketItem.mockData[0])
-        .environment(\.colorScheme, .dark)
 }

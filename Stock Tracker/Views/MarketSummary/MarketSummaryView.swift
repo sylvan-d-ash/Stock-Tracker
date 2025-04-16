@@ -11,7 +11,7 @@ struct MarketSummaryView: View {
     @StateObject private var viewModel = MarketSummaryViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 MarketSummaryHeaderView()
                     .listRowBackground(Color.clear)
@@ -22,15 +22,25 @@ struct MarketSummaryView: View {
                         .listRowBackground(Color.clear)
                 } else {
                     ForEach(viewModel.markets, id: \.symbol) { item in
-                        MarketItemRow(item: item)
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(EdgeInsets(top: 2, leading: 0, bottom: 2, trailing: 0))
+                        ZStack {
+                            NavigationLink(value: item) {
+                                EmptyView()
+                            }
+                            .opacity(0)
+
+                            MarketItemRow(item: item)
+                        }
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 2, leading: 0, bottom: 2, trailing: 0))
                     }
                 }
             }
             .navigationTitle("Market Summary")
             .task {
                 await viewModel.fetchMarketData()
+            }
+            .navigationDestination(for: MarketItem.self) { item in
+                MarketItemDetailsView(item: item)
             }
         }
     }

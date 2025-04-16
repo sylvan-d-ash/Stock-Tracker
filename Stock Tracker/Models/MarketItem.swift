@@ -16,13 +16,13 @@ struct MarketResult: Codable {
     let error: String?
 }
 
-struct MarketItem: Codable {
-    struct PriceInfo: Codable {
+struct MarketItem: Codable, Hashable {
+    struct PriceInfo: Codable, Hashable {
         let raw: Double
         let fmt: String
     }
 
-    struct Sparkline: Codable {
+    struct Sparkline: Codable, Hashable {
         let close: [Double]
     }
 
