@@ -12,7 +12,7 @@ import Testing
 struct MarketItemDetailsViewModelTests {
     @Test
     func testSuccessResponse() async throws {
-        let response = QuoteResponse(result: [QuoteSummary.mockData], error: nil)
+        let response = QuoteResponse(quoteResponse: QuoteResult(result: [QuoteSummary.mockData], error: nil))
         let service = MockService()
         service.summaryResult = .success(response)
 
@@ -29,7 +29,7 @@ struct MarketItemDetailsViewModelTests {
     @Test
     func testErrorInAPIResponse() async throws {
         let error = "An error occurred."
-        let response = QuoteResponse(result: [], error: error)
+        let response = QuoteResponse(quoteResponse: QuoteResult(result: [], error: error))
         let service = MockService()
         service.summaryResult = .success(response)
 
