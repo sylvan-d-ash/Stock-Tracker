@@ -16,6 +16,7 @@ enum MarketItemsEndpoint: APIEndpoint {
         case .marketItems:
             return "/market/v2/get-summary"
         case .summary:
+            // NOTE: /stock/v2/get-summary has been deprecated.
             return "/market/v2/get-quotes"
         }
     }
@@ -63,7 +64,7 @@ final class DefaultMarketItemsService: MarketItemsService {
 
     func fetchSummary(for symbols: [String]) async -> Result<QuoteResponse, any Error> {
         if useMockData {
-            let mockData = QuoteResponse(result: [QuoteSummary.mockData], error: nil)
+            let mockData = QuoteResponse(quoteResponse: QuoteResult(result: [QuoteSummary.mockData], error: nil))
             return .success(mockData)
         }
 

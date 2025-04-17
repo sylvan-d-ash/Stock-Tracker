@@ -31,12 +31,12 @@ final class MarketItemDetailsViewModel: ObservableObject {
 
         switch result {
         case .success(let response):
-            if let error = response.error {
+            if let error = response.quoteResponse.error {
                 errorMessage = error
                 isLoading = false
                 return
             }
-            summary = response.result.first
+            summary = response.quoteResponse.result.first
         case .failure(let error):
             errorMessage = error.localizedDescription
         }
