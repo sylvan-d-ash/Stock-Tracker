@@ -50,6 +50,18 @@ struct MarketSummaryView: View {
             .onDisappear {
                 viewModel.stopPolling()
             }
+            .alert(
+                "Error",
+                isPresented: .constant(viewModel.errorMessage != nil)
+            ) {
+                Button("Cancel", role: .cancel) {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                if let message = viewModel.errorMessage {
+                    Text(message)
+                }
+            }
         }
     }
 }
