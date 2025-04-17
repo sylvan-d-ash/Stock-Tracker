@@ -33,7 +33,7 @@ struct MarketSummaryViewModelTests {
     }
 
     @Test
-    func testErrorResponse() async throws {
+    func testErrorInAPIResponse() async throws {
         let error = "An error occurred."
         let mockResponse = MarketSummaryResponse(
             marketSummaryAndSparkResponse: MarketResult(
@@ -53,7 +53,7 @@ struct MarketSummaryViewModelTests {
     }
 
     @Test
-    func testAPIError() async throws {
+    func testFailureInAPI() async throws {
         let service = MockService()
         let viewModel = await MarketSummaryViewModel(service: service)
 
@@ -66,16 +66,7 @@ struct MarketSummaryViewModelTests {
 
     @MainActor @Test
     func testNoDataFetchWhenAlreadyLoading() async throws {
-        let item = MarketItem.mockData[0]
-        let mockResponse = MarketSummaryResponse(
-            marketSummaryAndSparkResponse: MarketResult(
-                result: [item],
-                error: nil
-            )
-        )
         let service = MockService()
-        service.marketResult = .success(mockResponse)
-
         let viewModel = MarketSummaryViewModel(service: service)
         viewModel.isLoading = true
 
