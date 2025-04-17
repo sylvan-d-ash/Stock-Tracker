@@ -11,20 +11,6 @@ import Testing
 
 struct MarketSummaryViewModelTests {
 
-    struct MockService: MarketItemsService {
-        let result: Result<Stock_Tracker.MarketSummaryResponse, Error>
-        let delay: TimeInterval
-
-        func fetchMarketItems() async -> Result<Stock_Tracker.MarketSummaryResponse, any Error> {
-            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-            return result
-        }
-        
-        func fetchSummary(for symbols: [String]) async -> Result<Stock_Tracker.QuoteResponse, any Error> {
-            fatalError("Not needed for now")
-        }
-    }
-
     @Test
     func testSuccessResponse() async throws {
         let item = MarketItem.mockData[0]
@@ -34,7 +20,8 @@ struct MarketSummaryViewModelTests {
                 error: nil
             )
         )
-        let service = MockService(result: .success(mockResponse), delay: 0)
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
         let viewModel = await MarketSummaryViewModel(service: service)
 
         await viewModel.fetchMarketData()
@@ -54,7 +41,8 @@ struct MarketSummaryViewModelTests {
                 error: error
             )
         )
-        let service = MockService(result: .success(mockResponse), delay: 0)
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
         let viewModel = await MarketSummaryViewModel(service: service)
 
         await viewModel.fetchMarketData()
@@ -66,14 +54,13 @@ struct MarketSummaryViewModelTests {
 
     @Test
     func testAPIError() async throws {
-        let error = APIError.noData
-        let service = MockService(result: .failure(error), delay: 0)
+        let service = MockService()
         let viewModel = await MarketSummaryViewModel(service: service)
 
         await viewModel.fetchMarketData()
 
         await #expect(viewModel.filteredMarkets.isEmpty)
-        await #expect(viewModel.errorMessage == error.localizedDescription)
+        await #expect(viewModel.errorMessage == APIError.noData.localizedDescription)
         await #expect(viewModel.isLoading == false)
     }
 
@@ -86,7 +73,9 @@ struct MarketSummaryViewModelTests {
                 error: nil
             )
         )
-        let service = MockService(result: .success(mockResponse), delay: 0)
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
+
         let viewModel = MarketSummaryViewModel(service: service)
         viewModel.isLoading = true
 
@@ -106,7 +95,10 @@ struct MarketSummaryViewModelTests {
                 error: nil
             )
         )
-        let service = MockService(result: .success(mockResponse), delay: 0.1) // small delay
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
+        service.delay = 0.1 // small delay
+
         let viewModel = await MarketSummaryViewModel(service: service)
 
         // assert initial state
@@ -138,7 +130,9 @@ struct MarketSummaryViewModelTests {
                 error: nil
             )
         )
-        let service = MockService(result: .success(mockResponse), delay: 0)
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
+
         let viewModel = MarketSummaryViewModel(service: service)
         await viewModel.fetchMarketData()
 
@@ -149,7 +143,16 @@ struct MarketSummaryViewModelTests {
 
     @MainActor @Test
     func testFilterWithMatchingSearchText() async throws {
-        let viewModel = MarketSummaryViewModel()
+        let mockResponse = MarketSummaryResponse(
+            marketSummaryAndSparkResponse: MarketResult(
+                result: MarketItem.mockData,
+                error: nil
+            )
+        )
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
+
+        let viewModel = MarketSummaryViewModel(service: service)
         await viewModel.fetchMarketData()
 
         viewModel.searchText = MarketItem.mockData.first?.shortName ?? ""
@@ -159,7 +162,16 @@ struct MarketSummaryViewModelTests {
 
     @MainActor @Test
     func testFilterWithNoMatchingSearchText() async throws {
-        let viewModel = MarketSummaryViewModel()
+        let mockResponse = MarketSummaryResponse(
+            marketSummaryAndSparkResponse: MarketResult(
+                result: MarketItem.mockData,
+                error: nil
+            )
+        )
+        let service = MockService()
+        service.marketResult = .success(mockResponse)
+
+        let viewModel = MarketSummaryViewModel(service: service)
         await viewModel.fetchMarketData()
 
         viewModel.searchText = "Random Item"
