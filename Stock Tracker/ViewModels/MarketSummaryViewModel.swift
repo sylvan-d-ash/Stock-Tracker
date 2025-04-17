@@ -10,12 +10,20 @@ import Combine
 
 @MainActor
 final class MarketSummaryViewModel: ObservableObject {
-    @Published var markets: [MarketItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var searchText = ""
 
     private let service: MarketItemsService
     private var useMockData = true
+    private var markets: [MarketItem] = []
+
+    var filteredMarkets: [MarketItem] {
+        if searchText.isEmpty {
+            return markets
+        }
+        return markets.filter { $0.shortName.localizedCaseInsensitiveContains(searchText) }
+    }
 
     init(service: MarketItemsService = DefaultMarketItemsService()) {
         self.service = service
@@ -23,7 +31,7 @@ final class MarketSummaryViewModel: ObservableObject {
 
     func fetchMarketData() async {
         if useMockData {
-            self.markets = MarketItem.mockData
+            markets = MarketItem.mockData
             return
         }
 

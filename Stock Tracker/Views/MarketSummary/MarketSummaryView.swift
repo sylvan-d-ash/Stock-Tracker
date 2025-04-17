@@ -21,7 +21,7 @@ struct MarketSummaryView: View {
                     ProgressView()
                         .listRowBackground(Color.clear)
                 } else {
-                    ForEach(viewModel.markets, id: \.symbol) { item in
+                    ForEach(viewModel.filteredMarkets, id: \.symbol) { item in
                         ZStack {
                             NavigationLink(value: item) {
                                 EmptyView()
@@ -42,6 +42,7 @@ struct MarketSummaryView: View {
             .navigationDestination(for: MarketItem.self) { item in
                 MarketItemDetailsView(item: item)
             }
+            .searchable(text: $viewModel.searchText, prompt: "Search Market")
         }
     }
 }
