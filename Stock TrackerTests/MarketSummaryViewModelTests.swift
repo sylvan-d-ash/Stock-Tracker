@@ -5,6 +5,7 @@
 //  Created by Sylvan  on 15/04/2025.
 //
 
+import Foundation
 import Testing
 @testable import Stock_Tracker
 
@@ -12,24 +13,16 @@ struct MarketSummaryViewModelTests {
 
     struct MockService: MarketItemsService {
         let result: Result<Stock_Tracker.MarketSummaryResponse, Error>
+        let delay: TimeInterval
 
         func fetchMarketItems() async -> Result<Stock_Tracker.MarketSummaryResponse, any Error> {
+            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
             return result
         }
         
         func fetchSummary(for symbols: [String]) async -> Result<Stock_Tracker.QuoteResponse, any Error> {
             fatalError("Not needed for now")
         }
-    }
-
-    @Test
-    func testInitialMockDataLoaded() async throws {
-        let viewModel = await MarketSummaryViewModel(useMockData: true)
-        await viewModel.fetchMarketData()
-
-        await #expect(viewModel.filteredMarkets.count == MarketItem.mockData.count)
-        await #expect(viewModel.isLoading == false)
-        await #expect(viewModel.errorMessage == nil)
     }
 
     @Test
@@ -41,8 +34,8 @@ struct MarketSummaryViewModelTests {
                 error: nil
             )
         )
-        let service = MockService(result: .success(mockResponse))
-        let viewModel = await MarketSummaryViewModel(service: service, useMockData: false)
+        let service = MockService(result: .success(mockResponse), delay: 0)
+        let viewModel = await MarketSummaryViewModel(service: service)
 
         await viewModel.fetchMarketData()
 
@@ -61,8 +54,8 @@ struct MarketSummaryViewModelTests {
                 error: error
             )
         )
-        let service = MockService(result: .success(mockResponse))
-        let viewModel = await MarketSummaryViewModel(service: service, useMockData: false)
+        let service = MockService(result: .success(mockResponse), delay: 0)
+        let viewModel = await MarketSummaryViewModel(service: service)
 
         await viewModel.fetchMarketData()
 
@@ -74,8 +67,8 @@ struct MarketSummaryViewModelTests {
     @Test
     func testAPIError() async throws {
         let error = APIError.noData
-        let service = MockService(result: .failure(error))
-        let viewModel = await MarketSummaryViewModel(service: service, useMockData: false)
+        let service = MockService(result: .failure(error), delay: 0)
+        let viewModel = await MarketSummaryViewModel(service: service)
 
         await viewModel.fetchMarketData()
 
@@ -85,32 +78,92 @@ struct MarketSummaryViewModelTests {
     }
 
     @MainActor @Test
+    func testNoDataFetchWhenAlreadyLoading() async throws {
+        let item = MarketItem.mockData[0]
+        let mockResponse = MarketSummaryResponse(
+            marketSummaryAndSparkResponse: MarketResult(
+                result: [item],
+                error: nil
+            )
+        )
+        let service = MockService(result: .success(mockResponse), delay: 0)
+        let viewModel = MarketSummaryViewModel(service: service)
+        viewModel.isLoading = true
+
+        await viewModel.fetchMarketData()
+
+        // Expect no change
+        #expect(viewModel.filteredMarkets.isEmpty)
+    }
+
+    @Test
+    func testIsLoadingIsToggledDuringFetch() async throws {
+        // arrange
+        let item = MarketItem.mockData[0]
+        let mockResponse = MarketSummaryResponse(
+            marketSummaryAndSparkResponse: MarketResult(
+                result: [item],
+                error: nil
+            )
+        )
+        let service = MockService(result: .success(mockResponse), delay: 0.1) // small delay
+        let viewModel = await MarketSummaryViewModel(service: service)
+
+        // assert initial state
+        await #expect(viewModel.isLoading == false)
+
+        // act
+        let task = Task {
+            await viewModel.fetchMarketData()
+        }
+
+        // 10ms delay to let the state update
+        try? await Task.sleep(nanoseconds: 10_000_000)
+
+        // assert new state
+        await #expect(viewModel.isLoading == true)
+
+        // wait for fetch to finish
+        await task.value
+
+        // assert final state
+        await #expect(viewModel.isLoading == false)
+    }
+
+    @MainActor @Test
     func testFilterWithEmptySearchText() async throws {
-        let viewmodel = MarketSummaryViewModel(useMockData: true)
-        await viewmodel.fetchMarketData()
+        let mockResponse = MarketSummaryResponse(
+            marketSummaryAndSparkResponse: MarketResult(
+                result: MarketItem.mockData,
+                error: nil
+            )
+        )
+        let service = MockService(result: .success(mockResponse), delay: 0)
+        let viewModel = MarketSummaryViewModel(service: service)
+        await viewModel.fetchMarketData()
 
-        viewmodel.searchText = ""
+        viewModel.searchText = ""
 
-        #expect(viewmodel.filteredMarkets.count == MarketItem.mockData.count)
+        #expect(viewModel.filteredMarkets.count == MarketItem.mockData.count)
     }
 
     @MainActor @Test
     func testFilterWithMatchingSearchText() async throws {
-        let viewmodel = MarketSummaryViewModel(useMockData: true)
-        await viewmodel.fetchMarketData()
+        let viewModel = MarketSummaryViewModel()
+        await viewModel.fetchMarketData()
 
-        viewmodel.searchText = MarketItem.mockData.first?.shortName ?? ""
+        viewModel.searchText = MarketItem.mockData.first?.shortName ?? ""
 
-        #expect(viewmodel.filteredMarkets.count == 1)
+        #expect(viewModel.filteredMarkets.count == 1)
     }
 
     @MainActor @Test
     func testFilterWithNoMatchingSearchText() async throws {
-        let viewmodel = MarketSummaryViewModel(useMockData: true)
-        await viewmodel.fetchMarketData()
+        let viewModel = MarketSummaryViewModel()
+        await viewModel.fetchMarketData()
 
-        viewmodel.searchText = "Random Item"
+        viewModel.searchText = "Random Item"
 
-        #expect(viewmodel.filteredMarkets.isEmpty)
+        #expect(viewModel.filteredMarkets.isEmpty)
     }
 }
