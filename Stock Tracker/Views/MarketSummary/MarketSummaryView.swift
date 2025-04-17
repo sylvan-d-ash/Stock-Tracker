@@ -20,6 +20,7 @@ struct MarketSummaryView: View {
                 if viewModel.isLoading {
                     ProgressView()
                         .listRowBackground(Color.clear)
+                        .frame(maxWidth: .infinity)
                 } else {
                     ForEach(viewModel.filteredMarkets, id: \.symbol) { item in
                         ZStack {
@@ -43,6 +44,12 @@ struct MarketSummaryView: View {
                 MarketItemDetailsView(item: item)
             }
             .searchable(text: $viewModel.searchText, prompt: "Search Market")
+            .onAppear {
+                viewModel.startPolling()
+            }
+            .onDisappear {
+                viewModel.stopPolling()
+            }
         }
     }
 }

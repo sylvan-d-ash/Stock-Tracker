@@ -13,10 +13,12 @@ final class MarketSummaryViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var searchText = ""
+    @Published private var markets: [MarketItem] = []
 
     private let service: MarketItemsService
+    private let pollInterval: TimeInterval
     private var useMockData = true
-    private var markets: [MarketItem] = []
+    private var timer: Timer?
 
     var filteredMarkets: [MarketItem] {
         if searchText.isEmpty {
@@ -25,8 +27,13 @@ final class MarketSummaryViewModel: ObservableObject {
         return markets.filter { $0.shortName.localizedCaseInsensitiveContains(searchText) }
     }
 
-    init(service: MarketItemsService = DefaultMarketItemsService()) {
+    init(service: MarketItemsService = DefaultMarketItemsService(), pollInterval: TimeInterval = 8) {
         self.service = service
+        self.pollInterval = pollInterval
+    }
+
+    deinit {
+        timer?.invalidate()
     }
 
     func fetchMarketData() async {
@@ -54,5 +61,17 @@ final class MarketSummaryViewModel: ObservableObject {
 
         isLoading = false
     }
-}
 
+    func startPolling() {
+        timer = Timer.scheduledTimer(withTimeInterval: pollInterval, repeats: true) { [weak self] _ in
+            Task {
+                await self?.fetchMarketData()
+            }
+        }
+    }
+
+    func stopPolling() {
+        timer?.invalidate()
+        timer = nil
+    }
+}
