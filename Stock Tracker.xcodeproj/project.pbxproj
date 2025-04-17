@@ -18,20 +18,12 @@
 			remoteGlobalIDString = 04A1719C2DAEFE4B00B08A26;
 			remoteInfo = "Stock Tracker";
 		};
-		04A171B62DAEFE4C00B08A26 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 04A171952DAEFE4B00B08A26 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 04A1719C2DAEFE4B00B08A26;
-			remoteInfo = "Stock Tracker";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0481B87C2DB13F8B00A8555C /* secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = secrets.xcconfig; sourceTree = "<group>"; };
 		04A1719D2DAEFE4B00B08A26 /* Stock Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stock Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04A171AB2DAEFE4C00B08A26 /* Stock TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stock TrackerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		04A171B52DAEFE4C00B08A26 /* Stock TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Stock TrackerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,11 +35,6 @@
 		04A171AE2DAEFE4C00B08A26 /* Stock TrackerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Stock TrackerTests";
-			sourceTree = "<group>";
-		};
-		04A171B82DAEFE4C00B08A26 /* Stock TrackerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Stock TrackerUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -67,13 +54,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		04A171B22DAEFE4C00B08A26 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -83,7 +63,6 @@
 				0481B87C2DB13F8B00A8555C /* secrets.xcconfig */,
 				04A1719F2DAEFE4B00B08A26 /* Stock Tracker */,
 				04A171AE2DAEFE4C00B08A26 /* Stock TrackerTests */,
-				04A171B82DAEFE4C00B08A26 /* Stock TrackerUITests */,
 				04A1719E2DAEFE4B00B08A26 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,7 +72,6 @@
 			children = (
 				04A1719D2DAEFE4B00B08A26 /* Stock Tracker.app */,
 				04A171AB2DAEFE4C00B08A26 /* Stock TrackerTests.xctest */,
-				04A171B52DAEFE4C00B08A26 /* Stock TrackerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -146,29 +124,6 @@
 			productReference = 04A171AB2DAEFE4C00B08A26 /* Stock TrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		04A171B42DAEFE4C00B08A26 /* Stock TrackerUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 04A171C52DAEFE4C00B08A26 /* Build configuration list for PBXNativeTarget "Stock TrackerUITests" */;
-			buildPhases = (
-				04A171B12DAEFE4C00B08A26 /* Sources */,
-				04A171B22DAEFE4C00B08A26 /* Frameworks */,
-				04A171B32DAEFE4C00B08A26 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				04A171B72DAEFE4C00B08A26 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				04A171B82DAEFE4C00B08A26 /* Stock TrackerUITests */,
-			);
-			name = "Stock TrackerUITests";
-			packageProductDependencies = (
-			);
-			productName = "Stock TrackerUITests";
-			productReference = 04A171B52DAEFE4C00B08A26 /* Stock TrackerUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -183,10 +138,6 @@
 						CreatedOnToolsVersion = 16.3;
 					};
 					04A171AA2DAEFE4C00B08A26 = {
-						CreatedOnToolsVersion = 16.3;
-						TestTargetID = 04A1719C2DAEFE4B00B08A26;
-					};
-					04A171B42DAEFE4C00B08A26 = {
 						CreatedOnToolsVersion = 16.3;
 						TestTargetID = 04A1719C2DAEFE4B00B08A26;
 					};
@@ -208,7 +159,6 @@
 			targets = (
 				04A1719C2DAEFE4B00B08A26 /* Stock Tracker */,
 				04A171AA2DAEFE4C00B08A26 /* Stock TrackerTests */,
-				04A171B42DAEFE4C00B08A26 /* Stock TrackerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -223,13 +173,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		04A171A92DAEFE4C00B08A26 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		04A171B32DAEFE4C00B08A26 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,13 +196,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		04A171B12DAEFE4C00B08A26 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -267,11 +203,6 @@
 			isa = PBXTargetDependency;
 			target = 04A1719C2DAEFE4B00B08A26 /* Stock Tracker */;
 			targetProxy = 04A171AC2DAEFE4C00B08A26 /* PBXContainerItemProxy */;
-		};
-		04A171B72DAEFE4C00B08A26 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 04A1719C2DAEFE4B00B08A26 /* Stock Tracker */;
-			targetProxy = 04A171B62DAEFE4C00B08A26 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -512,48 +443,6 @@
 			};
 			name = Release;
 		};
-		04A171C62DAEFE4C00B08A26 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				MACOSX_DEPLOYMENT_TARGET = 15.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.daitensai.Stock-TrackerUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = "Stock Tracker";
-				XROS_DEPLOYMENT_TARGET = 2.4;
-			};
-			name = Debug;
-		};
-		04A171C72DAEFE4C00B08A26 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				MACOSX_DEPLOYMENT_TARGET = 15.4;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.daitensai.Stock-TrackerUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = "Stock Tracker";
-				XROS_DEPLOYMENT_TARGET = 2.4;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -580,15 +469,6 @@
 			buildConfigurations = (
 				04A171C32DAEFE4C00B08A26 /* Debug */,
 				04A171C42DAEFE4C00B08A26 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		04A171C52DAEFE4C00B08A26 /* Build configuration list for PBXNativeTarget "Stock TrackerUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				04A171C62DAEFE4C00B08A26 /* Debug */,
-				04A171C72DAEFE4C00B08A26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
