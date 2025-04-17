@@ -17,7 +17,7 @@ final class MarketSummaryViewModel: ObservableObject {
 
     private let service: MarketItemsService
     private let pollInterval: TimeInterval
-    private var useMockData = true
+    private var useMockData: Bool
     private var timer: Timer?
 
     var filteredMarkets: [MarketItem] {
@@ -27,9 +27,10 @@ final class MarketSummaryViewModel: ObservableObject {
         return markets.filter { $0.shortName.localizedCaseInsensitiveContains(searchText) }
     }
 
-    init(service: MarketItemsService = DefaultMarketItemsService(), pollInterval: TimeInterval = 8) {
+    init(service: MarketItemsService = DefaultMarketItemsService(), pollInterval: TimeInterval = 8, useMockData: Bool = true) {
         self.service = service
         self.pollInterval = pollInterval
+        self.useMockData = useMockData
     }
 
     deinit {
@@ -51,6 +52,7 @@ final class MarketSummaryViewModel: ObservableObject {
         case .success(let response):
             if let error = response.marketSummaryAndSparkResponse.error {
                 errorMessage = error
+                isLoading = false
                 return
             }
 
