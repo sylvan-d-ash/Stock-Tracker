@@ -17,7 +17,6 @@ final class MarketSummaryViewModel: ObservableObject {
 
     private let service: MarketItemsService
     private let pollInterval: TimeInterval
-    private var useMockData: Bool
     private var timer: Timer?
 
     var filteredMarkets: [MarketItem] {
@@ -27,10 +26,9 @@ final class MarketSummaryViewModel: ObservableObject {
         return markets.filter { $0.shortName.localizedCaseInsensitiveContains(searchText) }
     }
 
-    init(service: MarketItemsService = DefaultMarketItemsService(), pollInterval: TimeInterval = 8, useMockData: Bool = true) {
+    init(service: MarketItemsService = DefaultMarketItemsService(), pollInterval: TimeInterval = 8) {
         self.service = service
         self.pollInterval = pollInterval
-        self.useMockData = useMockData
     }
 
     deinit {
@@ -38,13 +36,12 @@ final class MarketSummaryViewModel: ObservableObject {
     }
 
     func fetchMarketData() async {
-        if useMockData {
-            markets = MarketItem.mockData
-            return
+        guard !isLoading else { return }
+
+        if markets.isEmpty || errorMessage != nil {
+            isLoading = true
         }
 
-        guard !isLoading else { return }
-        isLoading = true
         errorMessage = nil
 
         let result = await service.fetchMarketItems()

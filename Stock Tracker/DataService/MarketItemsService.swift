@@ -40,16 +40,33 @@ protocol MarketItemsService {
 
 final class DefaultMarketItemsService: MarketItemsService {
     private let apiClient: APIClient
-    
-    init(apiClient: APIClient = URLSessionaAPIClient()) {
+    private let useMockData: Bool
+
+    init(apiClient: APIClient = URLSessionaAPIClient(), useMockData: Bool = false) {
         self.apiClient = apiClient
+        self.useMockData = useMockData
     }
     
     func fetchMarketItems() async -> Result<MarketSummaryResponse, Error> {
+        if useMockData {
+            let mockData = MarketSummaryResponse(
+                marketSummaryAndSparkResponse: MarketResult(
+                    result: MarketItem.mockData,
+                    error: nil
+                )
+            )
+            return .success(mockData)
+        }
+
         return await apiClient.fetch(MarketItemsEndpoint.marketItems)
     }
 
     func fetchSummary(for symbols: [String]) async -> Result<QuoteResponse, any Error> {
+        if useMockData {
+            let mockData = QuoteResponse(result: [QuoteSummary.mockData], error: nil)
+            return .success(mockData)
+        }
+
         return await apiClient.fetch(MarketItemsEndpoint.summary(symbols: symbols))
     }
 }

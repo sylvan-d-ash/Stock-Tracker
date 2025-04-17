@@ -16,7 +16,6 @@ final class MarketItemDetailsViewModel: ObservableObject {
 
     private let item: MarketItem
     private let service: MarketItemsService
-    private var useMockData = true
 
     init(item: MarketItem, service: MarketItemsService = DefaultMarketItemsService()) {
         self.item = item
@@ -24,11 +23,6 @@ final class MarketItemDetailsViewModel: ObservableObject {
     }
 
     func fetchSummary() async {
-        if useMockData {
-            summary = QuoteSummary.mockData
-            return
-        }
-
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
@@ -39,11 +33,14 @@ final class MarketItemDetailsViewModel: ObservableObject {
         case .success(let response):
             if let error = response.error {
                 errorMessage = error
+                isLoading = false
                 return
             }
             summary = response.result.first
         case .failure(let error):
             errorMessage = error.localizedDescription
         }
+
+        isLoading = false
     }
 }
