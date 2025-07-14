@@ -1,6 +1,6 @@
 # Stock-Tracker
 
-A stock tracking app implemented using SwiftUI. The app gets data from [YH Finance API](https://rapidapi.com/apidojo/api/yahoo-finance1).
+The Stock-Tracker app is a personal learning project developed using Swift and SwiftUI. It integrates with the [YH Finance API](https://rapidapi.com/apidojo/api/yahoo-finance1) to fetch real-time stock data, which is then displayed in a modern, reactive UI. The project involved solving data decoding issues and implementing unit tests to ensure the reliability of the ViewModels. The app's architecture leverages SwiftUI's declarative syntax, providing a seamless user experience.
 
 ## Setup
 
